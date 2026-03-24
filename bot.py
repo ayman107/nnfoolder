@@ -69,17 +69,21 @@ class AIModel:
     
     @classmethod
     def analyze_image(cls, image_data: str, prompt: str = None) -> str:
-        url = f"https://generativelanguage.googleapis.com/v1beta/{cls.VISION_MODEL}:generateContent"
+        url = f"https://generativelanguage.googleapis.com/v1/models/{cls.VISION_MODEL}:generateContent"
         url += f"?key={Config.GEMINI_KEY}"
         
-        payload = {
-            "contents": [{
-                "parts": [
-                    {"text": prompt or "Describe this image in detail"},
-                    {"inline_data": {"mime_type": "image/jpeg", "data": image_data}}
-                ]
-            }]
-        }
+        if prompt:
+            parts = [
+                {"text": prompt},
+                {"inline_data": {"mime_type": "image/jpeg", "data": image_data}}
+            ]
+        else:
+            parts = [
+                {"inline_data": {"mime_type": "image/jpeg", "data": image_data}},
+                {"text": "Describe this image in detail"}
+            ]
+        
+        payload = {"contents": [{"parts": parts}]}
         
         try:
             response = requests.post(url, json=payload, timeout=60)
@@ -98,7 +102,7 @@ class AIModel:
     
     @classmethod
     def chat(cls, message: str, history: list = None) -> str:
-        url = f"https://generativelanguage.googleapis.com/v1beta/{cls.VISION_MODEL}:generateContent"
+        url = f"https://generativelanguage.googleapis.com/v1/models/{cls.VISION_MODEL}:generateContent"
         url += f"?key={Config.GEMINI_KEY}"
         
         contents = history or []
