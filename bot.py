@@ -37,7 +37,7 @@ async def get_available_model():
         logger.error(f"Model fetch error: {e}")
         return "models/gemini-2.5-flash"
 
-ACTIVE_MODEL = None
+ACTIVE_MODEL = "models/gemini-2.0-flash"
 
 def get_gemini_response(prompt, image_data=None):
     import requests
