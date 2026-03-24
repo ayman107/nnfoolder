@@ -1,0 +1,9 @@
+{
+  "name": "MeClaw System",
+  "version": "2.0.0",
+  "description": "Secure AI-powered Telegram bot system",
+  "scripts": {
+    "start": "python bot.py",
+    "dev": "python bot.py"
+  }
+}
