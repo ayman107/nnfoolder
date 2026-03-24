@@ -19,10 +19,16 @@ ALLOWED_USERS = [OWNER_ID] if OWNER_ID else []
 
 async def get_available_model():
     import requests
-    url = f"https://generativelanguage.googleapis.com/v1beta/models?key={GEMINI_KEY}"
+    url = f"https://generativelanguage.googleapis.com/v1/models?key={GEMINI_KEY}"
     try:
         response = requests.get(url, timeout=10)
-        models = response.json().get('models', [])
+        data = response.json()
+        models = data.get('models', [])
+        vision_models = ["gemini-1.5-pro", "gemini-2.0-flash", "gemini-2.5-flash"]
+        for m in models:
+            name = m.get('name', '').replace('models/', '')
+            if name in vision_models and "generateContent" in m.get('supportedGenerationMethods', []):
+                return f"models/{name}"
         for m in models:
             if "generateContent" in m.get('supportedGenerationMethods', []):
                 return m['name']
