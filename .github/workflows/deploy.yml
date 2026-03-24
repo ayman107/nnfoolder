@@ -21,12 +21,10 @@ jobs:
         run: npm install -g @railway/cli
 
       - name: Railway Login
-        run: railway login --token "${{ vars.RAILWAY_TOKEN }}"
-        env:
-          RAILWAY_TOKEN: ${{ vars.RAILWAY_TOKEN }}
+        run: railway login --token "${{ secrets.RAILWAY_TOKEN }}"
 
       - name: Create Railway Project
-        run: railway init --token "${{ vars.RAILWAY_TOKEN }}"
+        run: railway init --token "${{ secrets.RAILWAY_TOKEN }}"
         continue-on-error: true
 
       - name: Set Variables
@@ -35,9 +33,9 @@ jobs:
           railway variables set GEMINI_KEY "${{ secrets.GEMINI_KEY }}"
           railway variables set OWNER_ID "${{ secrets.OWNER_ID }}"
         env:
-          RAILWAY_TOKEN: ${{ vars.RAILWAY_TOKEN }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
       - name: Deploy
-        run: railway up --token "${{ vars.RAILWAY_TOKEN }}"
+        run: railway up --token "${{ secrets.RAILWAY_TOKEN }}"
         env:
-          RAILWAY_TOKEN: ${{ vars.RAILWAY_TOKEN }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
